@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "344354214270",
+    "project_id": "takrorlash-2d42e",
+    "storage_bucket": "takrorlash-2d42e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:344354214270:android:c080b897472c8fbb11232f",
+        "android_client_info": {
+          "package_name": "com.example.takrorlash"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCl3YOoUBx12GaTuVHoc0NdTkbagyEEmbY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
