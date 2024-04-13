@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:takrorlash/screen/profile_screen.dart';
 
 import 'auth/login/login_screen.dart';
 import 'auth/register/register_screen.dart';
@@ -11,6 +12,9 @@ class AppRoutes {
 
       case RouteNames.registerRoute:
         return navigate(const RegisterScreen());
+
+      case RouteNames.tabRoute:
+        return navigate(const ProfileScreen());
 
       default:
         return navigate(

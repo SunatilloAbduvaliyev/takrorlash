@@ -32,9 +32,6 @@ class AuthViewModel extends ChangeNotifier {
         }
         _notify(false);
         if (!context.mounted) return;
-        debugPrint("ishladi ${FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: email,
-          password: password,)}");
         Navigator.pushReplacementNamed(context, RouteNames.tabRoute);
       } on FirebaseAuthException catch (e) {
         if (!context.mounted) return;
