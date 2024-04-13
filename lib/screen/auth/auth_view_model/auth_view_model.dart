@@ -64,7 +64,7 @@ class AuthViewModel extends ChangeNotifier {
           password: password,
         );
         if (!context.mounted) return;
-        Navigator.pushReplacementNamed(context, RouteNames.tabRoute);
+        Navigator.pushReplacementNamed(context, RouteNames.addUpdateUserScreen);
       } on FirebaseAuthException catch (err) {
         if (!context.mounted) return;
         showErrorForLogin(err.code, context);
