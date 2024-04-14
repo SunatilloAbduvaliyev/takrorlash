@@ -15,6 +15,6 @@ class UpdateUserEvent extends UserEvent{
 }
 
 class DeleteUserEvent extends UserEvent{
-  final String userId;
-  DeleteUserEvent({required this.userId});
+  final String dbId;
+  DeleteUserEvent({required this.dbId});
 }
