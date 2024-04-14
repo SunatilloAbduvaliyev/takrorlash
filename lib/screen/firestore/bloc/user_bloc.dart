@@ -81,6 +81,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       DeleteUserEvent event, Emitter<UserState> emit) async {
     try {
       emit(LoadingUserState());
+      await FirebaseStorage.instance.ref().child(event.imagePath).delete();
       await FirebaseFirestore.instance
           .collection("users")
           .doc(event.dbId)
@@ -88,6 +89,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       add(GetAllUsersEvent());
     } catch (e) {
       emit(ErrorUserState(errorMessage: e.toString()));
+      throw Exception(e);
     }
   }
 
@@ -120,107 +122,12 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       UserUpLoadImageEvent event, Emitter<UserState> emit
       ) async {
     try {
-
       var ref = FirebaseStorage.instance.ref().child(storagePath);
-      emit(LoadingUserState());
       File file = File(event.pickedFile.path);
-
       var uploadTask = await ref.putFile(file);
-
       String downloadUrl = await uploadTask.ref.getDownloadURL();
       emit(InitialUserState(imageUrl: downloadUrl));
     } on FirebaseException catch (error) {
       throw Exception(error.toString());
     }
-  }
-  //
-  // Future<void> uploadImage(
-  //     UserUpLoadImageEvent event, Emitter<UserState> emit) async {
-  //   try {
-  //     var ref = FirebaseStorage.instance.ref().child(storagePath);
-  //     File file = File(event.pickedFile.path);
-  //     var uploadTask = await ref.putFile(file);
-  //     String downloadUrl = await uploadTask.ref.getDownloadURL();
-  //     emit(InitialUserState(imageUrl: downloadUrl));
-  //   } on FirebaseException catch (error) {
-  //     throw Exception(error.toString());
-  //   }
-  // }
-}
-
-// import 'dart:io';
-//
-// import 'package:firebase_storage/firebase_storage.dart';
-// import 'package:flutter/cupertino.dart';
-// import 'package:image_picker/image_picker.dart';
-//
-// class ImageViewModel extends ChangeNotifier {
-//   bool isLoading = false;
-//   String imageUrl = '';
-//   String storagePath = '';
-//   ImagePicker picker = ImagePicker();
-//   XFile? image;
-//
-//   changeImage(String value) {
-//     imageUrl = value;
-//     notifyListeners();
-//   }
-//   Future<void> getImageFromCamera() async {
-//     _notify(true);
-//     image = await picker.pickImage(
-//       source: ImageSource.camera,
-//       maxHeight: 200,
-//       maxWidth: 200,
-//     );
-//     storagePath = "files/images/${image!.name}";
-//     imageUrl = await uploadImage(
-//       pickedFile: image!,
-//       storagePath: storagePath,
-//     );
-//     _notify(false);
-//   }
-//
-//   Future<void> getImageFromGallery() async {
-//     _notify(true);
-//     XFile? image = await picker.pickImage(
-//       source: ImageSource.gallery,
-//       maxHeight: 200,
-//       maxWidth: 200,
-//     );
-//     storagePath = "files/images/${image!.name}";
-//     imageUrl = await uploadImage(
-//       pickedFile: image,
-//       storagePath: storagePath,
-//     );
-//     _notify(false);
-//
-//   }
-//
-//   Future<String> uploadAndGetImageUrl(File file, String filename) async {
-//     String imageUrl = '';
-//
-//     final storageRef = FirebaseStorage.instance.ref();
-//
-//     final mountainsRef = storageRef.child(filename);
-//
-//     debugPrint(mountainsRef.name);
-//
-//     final mountainImagesRef = storageRef.child("images/$filename");
-//     try {
-//       _notify(true);
-//       await mountainsRef.putFile(file);
-//     } on FirebaseException catch (e) {
-//       debugPrint("ERROR:${e.message}");
-//     }
-//     imageUrl = await mountainImagesRef.getDownloadURL();
-//     _notify(false);
-//     return imageUrl;
-//   }
-//
-
-//
-//   _notify(bool v) {
-//     isLoading = v;
-//     notifyListeners();
-//   }
-// }
+  }}

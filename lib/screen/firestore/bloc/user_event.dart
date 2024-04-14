@@ -18,7 +18,8 @@ class UpdateUserEvent extends UserEvent{
 
 class DeleteUserEvent extends UserEvent{
   final String dbId;
-  DeleteUserEvent({required this.dbId});
+  final String imagePath;
+  DeleteUserEvent({required this.dbId,required this.imagePath});
 }
 
 class UserImageFromGallery extends UserEvent{}

@@ -63,11 +63,12 @@ class _AddUpdateUserScreenState extends State<AddUpdateUserScreen> {
                         context.read<UserBloc>().add(
                               InsertUserEvent(
                                 userModel: UserModel(
+                                  storagePath: context.read<UserBloc>().storagePath,
                                   name: nameController.text,
                                   age: ageController.text,
                                   dbId: '',
                                   userId: '',
-                                  image: '',
+                                  image: state.imageUrl,
                                 ),
                               ),
                             );
@@ -80,7 +81,6 @@ class _AddUpdateUserScreenState extends State<AddUpdateUserScreen> {
                         context.read<UserBloc>().add(
                           UserImageFromCamera()
                         );
-                        context.read<UserBloc>().add(GetAllUsersEvent());
                       },
                       child: const Text('Camera'),
                     ),
@@ -89,7 +89,6 @@ class _AddUpdateUserScreenState extends State<AddUpdateUserScreen> {
                         context.read<UserBloc>().add(
                           UserImageFromGallery()
                         );
-                        context.read<UserBloc>().add(GetAllUsersEvent());
                       },
                       child: const Text('Galeriya'),
                     ),
@@ -109,6 +108,7 @@ class _AddUpdateUserScreenState extends State<AddUpdateUserScreen> {
                           context.read<UserBloc>().add(
                                 UpdateUserEvent(
                                   userModel: UserModel(
+                                      storagePath: context.read<UserBloc>().storagePath,
                                       dbId: state.userModel[0].dbId,
                                       name: 'Update name',
                                       age: 'Update age',
@@ -123,7 +123,7 @@ class _AddUpdateUserScreenState extends State<AddUpdateUserScreen> {
                     ElevatedButton(
                       onPressed: () {
                         context.read<UserBloc>().add(
-                          DeleteUserEvent(dbId: state.userModel[0].dbId)
+                          DeleteUserEvent(dbId: state.userModel[0].dbId, imagePath: state.userModel[0].storagePath)
                         );
                       },
                       child: const Text('Delete'),),
