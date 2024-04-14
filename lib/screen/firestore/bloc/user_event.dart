@@ -1,3 +1,5 @@
+import 'package:image_picker/image_picker.dart';
+
 import '../../../data/model/user_model.dart';
 
 abstract class UserEvent{}
@@ -17,4 +19,12 @@ class UpdateUserEvent extends UserEvent{
 class DeleteUserEvent extends UserEvent{
   final String dbId;
   DeleteUserEvent({required this.dbId});
+}
+
+class UserImageFromGallery extends UserEvent{}
+class UserImageFromCamera extends UserEvent{}
+class UserUpLoadImageEvent extends UserEvent{
+  final XFile pickedFile;
+  final String storagePath;
+  UserUpLoadImageEvent({required this.pickedFile, required this.storagePath});
 }

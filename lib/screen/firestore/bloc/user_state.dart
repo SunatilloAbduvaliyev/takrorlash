@@ -8,7 +8,10 @@ class GetAllUserState extends UserState {
   GetAllUserState({required this.userModel});
 }
 
-class InitialUserState extends UserState {}
+class InitialUserState extends UserState {
+  final String imageUrl;
+  InitialUserState({this.imageUrl = ''});
+}
 
 class LoadingUserState extends UserState {}
 

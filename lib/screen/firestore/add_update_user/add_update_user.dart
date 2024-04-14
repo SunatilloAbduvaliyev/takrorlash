@@ -41,6 +41,8 @@ class _AddUpdateUserScreenState extends State<AddUpdateUserScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    if(state.imageUrl.isNotEmpty)
+                      Image.network(state.imageUrl),
                     TextField(
                       controller: nameController,
                       decoration: const InputDecoration(
@@ -72,6 +74,24 @@ class _AddUpdateUserScreenState extends State<AddUpdateUserScreen> {
                         context.read<UserBloc>().add(GetAllUsersEvent());
                       },
                       child: const Text('Saqlash'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        context.read<UserBloc>().add(
+                          UserImageFromCamera()
+                        );
+                        context.read<UserBloc>().add(GetAllUsersEvent());
+                      },
+                      child: const Text('Camera'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        context.read<UserBloc>().add(
+                          UserImageFromGallery()
+                        );
+                        context.read<UserBloc>().add(GetAllUsersEvent());
+                      },
+                      child: const Text('Galeriya'),
                     ),
                   ],
                 );
