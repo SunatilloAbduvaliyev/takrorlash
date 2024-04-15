@@ -29,30 +29,28 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   _insertUser(InsertUserEvent event, Emitter<UserState> emit) async {
     emit(LoadingUserState());
     try {
+      //Database ga ma'lumot qo'shish
       var collectionReference = await FirebaseFirestore.instance
           .collection("users")
           .add(event.userModel.toJson());
+      //Database ga qo'shilgan ma'lmotning id sini o'ziga update qilish
       await FirebaseFirestore.instance
           .collection('users')
           .doc(collectionReference.id)
           .update(
         {'_id': collectionReference.id},
       );
-      debugPrint(
-          "------------------------------------------------chaqirlish joyi");
       add(GetAllUsersEvent());
     } catch (e) {
       throw Exception(e);
     }
   }
 
-  Future<void> _getAllUsers(
-      GetAllUsersEvent event, Emitter<UserState> emit) async {
-    debugPrint("------------------------------------------------working");
+  Future<void> _getAllUsers(GetAllUsersEvent event,
+      Emitter<UserState> emit) async {
     try {
-      debugPrint("------------------------------------------------working try");
       final querySnapshot =
-          await FirebaseFirestore.instance.collection('users').get();
+      await FirebaseFirestore.instance.collection('users').get();
       final users = querySnapshot.docs
           .map((doc) => UserModel.fromJson(doc.data()))
           .toList();
@@ -63,8 +61,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     }
   }
 
-  Future<void> _updateUser(
-      UpdateUserEvent event, Emitter<UserState> emit) async {
+  Future<void> _updateUser(UpdateUserEvent event,
+      Emitter<UserState> emit) async {
     try {
       emit(LoadingUserState());
       await FirebaseFirestore.instance
@@ -77,8 +75,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     }
   }
 
-  Future<void> _deleteUser(
-      DeleteUserEvent event, Emitter<UserState> emit) async {
+  Future<void> _deleteUser(DeleteUserEvent event,
+      Emitter<UserState> emit) async {
     try {
       emit(LoadingUserState());
       await FirebaseStorage.instance.ref().child(event.imagePath).delete();
@@ -94,8 +92,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   }
 
   ///------------------image
-  Future<void> getImageFromCamera(
-      UserImageFromCamera event, Emitter<UserState> emit) async {
+  Future<void> getImageFromCamera(UserImageFromCamera event,
+      Emitter<UserState> emit) async {
     emit(LoadingUserState());
     image = await picker.pickImage(
       source: ImageSource.camera,
@@ -106,8 +104,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     add(UserUpLoadImageEvent(pickedFile: image!, storagePath: storagePath));
   }
 
-  Future<void> getImageFromGallery(
-      UserImageFromGallery event, Emitter<UserState> emit) async {
+  Future<void> getImageFromGallery(UserImageFromGallery event,
+      Emitter<UserState> emit) async {
     emit(LoadingUserState());
     XFile? image = await picker.pickImage(
       source: ImageSource.gallery,
@@ -118,9 +116,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     add(UserUpLoadImageEvent(pickedFile: image, storagePath: storagePath));
   }
 
-  Future<void> uploadImage(
-      UserUpLoadImageEvent event, Emitter<UserState> emit
-      ) async {
+  Future<void> uploadImage(UserUpLoadImageEvent event,
+      Emitter<UserState> emit) async {
     try {
       var ref = FirebaseStorage.instance.ref().child(storagePath);
       File file = File(event.pickedFile.path);
@@ -130,4 +127,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     } on FirebaseException catch (error) {
       throw Exception(error.toString());
     }
-  }}
+  }
+
+
+}
