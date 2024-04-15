@@ -52,4 +52,18 @@ class BookModel {
       'rate': rate,
     };
   }
+
+
+  Map<String, dynamic> toForUpdateJson() {
+    return {
+      '_uuid': uuid,
+      'author': author,
+      'description': description,
+      'image_url': imageUrl,
+      'is_check': isCheck,
+      'name': name,
+      'price': price,
+      'rate': rate,
+    };
+  }
 }
