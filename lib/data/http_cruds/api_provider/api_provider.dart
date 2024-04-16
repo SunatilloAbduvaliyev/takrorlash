@@ -6,7 +6,7 @@ import 'package:takrorlash/utils/constants/app_constants.dart';
 
 import '../../my_response/my_response.dart';
 
-class ApiProvider {
+class HttpApiProvider {
  static Future<MyResponse> getAllBook() async {
     try {
       http.Response response = await http.get(
