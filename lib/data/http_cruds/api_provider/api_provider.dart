@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
-import 'package:takrorlash/data/model/book_model.dart';
+import 'package:takrorlash/data/model/book_model/book_model.dart';
 import 'package:takrorlash/utils/constants/app_constants.dart';
 
 import '../../my_response/my_response.dart';

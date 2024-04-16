@@ -1,4 +1,4 @@
-import '../../data/model/book_model.dart';
+import '../../data/model/book_model/book_model.dart';
 
 abstract class BookEvent{}
 

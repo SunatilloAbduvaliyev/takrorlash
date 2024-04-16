@@ -7,7 +7,7 @@ import 'package:takrorlash/screen/http_user_bloc/user_event.dart';
 import 'package:takrorlash/screen/http_user_bloc/user_state.dart';
 import 'package:takrorlash/utils/style/app_text_style.dart';
 
-import '../../data/model/book_model.dart';
+import '../../data/model/book_model/book_model.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
