@@ -7,10 +7,10 @@ import 'package:takrorlash/utils/constants/app_constants.dart';
 import '../../my_response/my_response.dart';
 
 class HttpApiProvider {
- static Future<MyResponse> getAllBook() async {
+  Future<MyResponse> getAllBook() async {
     try {
       http.Response response = await http.get(
-        Uri.https(AppConstants.baseUrl),
+        Uri.https(AppConstants.baseUrl,"/api/v1/http_dio"),
         headers: {
           "Authorization": "Bearer ${AppConstants.token}",
           "Content-Type": "application/json",
@@ -27,10 +27,10 @@ class HttpApiProvider {
       return MyResponse(errorMessage: error.toString());
     }
   }
- static Future<MyResponse> addBook({required BookModel bookModel}) async {
+  Future<MyResponse> addBook({required BookModel bookModel}) async {
     try {
       http.Response response = await http.post(
-        Uri.https(AppConstants.baseUrl),
+        Uri.https(AppConstants.baseUrl,"/api/v1/http_dio"),
         headers: {
           "Authorization": "Bearer ${AppConstants.token}",
           "Content-Type": "application/json",
@@ -48,10 +48,10 @@ class HttpApiProvider {
       return MyResponse(errorMessage: error.toString());
     }
   }
- static Future<MyResponse> deleteBook({required String uuid}) async {
+  Future<MyResponse> deleteBook({required String uuid}) async {
     try {
       http.Response response = await http.delete(
-        Uri.https(AppConstants.baseUrl),
+        Uri.https(AppConstants.baseUrl,"/api/v1/http_dio"),
         headers: {
           "Authorization": "Bearer ${AppConstants.token}",
           "Content-Type": "application/json",
@@ -69,10 +69,10 @@ class HttpApiProvider {
       return MyResponse(errorMessage: error.toString());
     }
   }
- static Future<MyResponse> updateBook({required BookModel bookModel}) async {
+  Future<MyResponse> updateBook({required BookModel bookModel}) async {
     try {
       http.Response response = await http.put(
-        Uri.https(AppConstants.baseUrl),
+        Uri.https(AppConstants.baseUrl,"/api/v1/http_dio"),
         headers: {
           "Authorization": "Bearer ${AppConstants.token}",
           "Content-Type": "application/json",
