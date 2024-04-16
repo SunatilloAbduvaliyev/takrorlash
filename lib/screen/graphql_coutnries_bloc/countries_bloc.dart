@@ -25,4 +25,5 @@ class CountriesBloc extends Bloc<CountriesEvent, CountriesState> {
   }
   List<CountryModel> countries = [];
   final ApiClient apiClient;
+
 }
