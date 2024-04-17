@@ -19,111 +19,140 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: SizedBox(
+      body: Stack(
+        children: [
+          Image.asset(
+            'assets/images/main.jpg',
             width: double.infinity,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Obx(
-                  () => Text(
-                    controller.question.value,
-                    style: AppTextStyle.medium.copyWith(fontSize: 24),
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Obx(
-                  () => Pinput(
-                    length: controller.answer.value.length,
-                    controller: textEditingController,
-                    validator: (value) {
-                      if (value == controller.answer.value.toUpperCase()) {
-                        showDialog(
-                            context: context,
-                            builder: (context) {
-                              return AlertDialog(
-                                title: Column(
-                                  children: [
-                                    Lottie.asset('assets/lottie/winner.json'),
-                                    Text(
-                                      "You Win!",
-                                      style: AppTextStyle.medium
-                                          .copyWith(fontSize: 22),
-                                    ),
-                                  ],
-                                ),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () {
-                                      textEditingController.clear();
-                                      controller.getQuestion();
-                                      Navigator.pop(context);
-                                    },
-                                    child: Obx(()=> Text(
-                                        controller.isFinish.value?"Finish":'Next'),)
-                                  )
-                                ],
-                              );
-                            });
-                        return null;
-                      } else {
-                        debugPrint("else______________$value");
-                        return controller.errorEmoji.value;
-                      }
-                    },
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Obx(
-                  () => Wrap(
-                    spacing: 2,
-                    runSpacing: 5,
-                    children: [
-                      ...List.generate(controller.letters.length, (index) {
-                        return Ink(
+            height: MediaQuery.of(context).size.height,
+          ),
+          Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: SizedBox(
+                width: double.infinity,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Obx(
+                      () => Text(
+                        controller.question.value,
+                        style: AppTextStyle.medium.copyWith(fontSize: 24),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Obx(
+                      () => Pinput(
+                        defaultPinTheme: PinTheme(
+                          width: 56,
+                          height: 56,
+                          textStyle: const TextStyle(fontSize: 20, color: Color.fromRGBO(30, 60, 87, 1), fontWeight: FontWeight.w600),
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(16),
-                            color: Colors.green,
+                            border: Border.all(color:  Colors.green),
+                            borderRadius: BorderRadius.circular(20),
                           ),
-                          child: InkWell(
-                            borderRadius: BorderRadius.circular(16),
-                            onTap: () {
-                              if (controller.letters[index] != "<=" &&
-                                  textEditingController.text.length <=
-                                      controller.answer.value.length) {
-                                textEditingController.text +=
-                                    controller.letters[index];
-                              } else {
-                                String text = textEditingController.text;
-                                if (text.isNotEmpty) {
-                                  text = text.substring(0, text.length - 1);
-                                }
-                                textEditingController.text = text;
-                              }
-                            },
-                            child: Container(
-                                margin: const EdgeInsets.symmetric(
-                                    horizontal: 20, vertical: 10),
-                                child: Text(
-                                  controller.letters[index],
-                                  style: AppTextStyle.medium
-                                      .copyWith(color: Colors.white),
-                                )),
+                        ),
+                        errorPinTheme: PinTheme(
+                          width: 56,
+                          height: 56,
+                          textStyle: const TextStyle(fontSize: 20, color: Color.fromRGBO(30, 60, 87, 1), fontWeight: FontWeight.w600),
+                          decoration: BoxDecoration(
+                            border: Border.all(color:  Colors.red),
+                            borderRadius: BorderRadius.circular(20),
                           ),
-                        );
-                      })
-                    ],
-                  ),
-                )
-              ],
-            ),
-          )),
+                        ),
+                        length: controller.answer.value.length,
+                        controller: textEditingController,
+                        validator: (value) {
+                          if (value == controller.answer.value.toUpperCase()) {
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: Column(
+                                      children: [
+                                        Lottie.asset('assets/lottie/winner.json'),
+                                        Text(
+                                          "You Win!",
+                                          style: AppTextStyle.medium
+                                              .copyWith(fontSize: 22),
+                                        ),
+                                      ],
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          textEditingController.clear();
+                                          controller.getQuestion();
+                                          Navigator.pop(context);
+                                        },
+                                        child: Obx(()=> Text(
+                                            controller.isFinish.value?"Finish":'Next'),)
+                                      )
+                                    ],
+                                  );
+                                });
+                            return null;
+                          } else {
+                            debugPrint("else______________$value");
+                            return controller.errorEmoji.value;
+                          }
+                        },
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Obx(
+                      () => Wrap(
+                        spacing: 2,
+                        runSpacing: 5,
+                        children: [
+                          ...List.generate(controller.letters.length, (index) {
+                            return Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(16),
+                                color: Colors.green,
+                              ),
+                              child: Ink(
+                                child: InkWell(
+                                  borderRadius: BorderRadius.circular(16),
+                                  onTap: () {
+                                    if (controller.letters[index] != "<=" &&
+                                        textEditingController.text.length <=
+                                            controller.answer.value.length) {
+                                      textEditingController.text +=
+                                          controller.letters[index];
+                                    } else {
+                                      String text = textEditingController.text;
+                                      if (text.isNotEmpty) {
+                                        text = text.substring(0, text.length - 1);
+                                      }
+                                      textEditingController.text = text;
+                                    }
+                                  },
+                                  child: Container(
+                                      margin: const EdgeInsets.symmetric(
+                                          horizontal: 20, vertical: 10),
+                                      child: Text(
+                                        controller.letters[index],
+                                        style: AppTextStyle.medium
+                                            .copyWith(color: Colors.white),
+                                      )),
+                                ),
+                              ),
+                            );
+                          })
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              )),
+        ],
+      ),
     );
   }
 }
