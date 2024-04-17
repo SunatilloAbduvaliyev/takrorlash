@@ -26,6 +26,11 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
             width: double.infinity,
             height: MediaQuery.of(context).size.height,
           ),
+          Positioned(
+            top: -200,
+            child:
+          Lottie.asset('assets/lottie/cloud.json'),
+          ),
           Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: SizedBox(
