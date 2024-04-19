@@ -12,10 +12,35 @@ class PicScreen extends StatefulWidget {
   State<PicScreen> createState() => _PicScreenState();
 }
 
-class _PicScreenState extends State<PicScreen> {
+class _PicScreenState extends State<PicScreen>  with SingleTickerProviderStateMixin {
   bool visible = false;
 
+  late AnimationController globalAnimationController;
+  late Animation<Alignment> animationAlign;
+  @override
+  void initState() {
+    globalAnimationController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 500));
 
+    animationAlign = TweenSequence<Alignment>([
+      TweenSequenceItem<Alignment>(
+          tween: Tween(begin: Alignment.center, end: Alignment.centerLeft),
+          weight: 40),
+      TweenSequenceItem<Alignment>(
+          tween: Tween(begin: Alignment.centerLeft, end: Alignment.center),
+          weight: 40),
+      TweenSequenceItem<Alignment>(
+          tween: Tween(begin: Alignment.centerRight, end: Alignment.center),
+          weight: 40),
+    ]).animate(CurvedAnimation(
+        parent: globalAnimationController, curve: Curves.decelerate));
+
+    globalAnimationController.addListener(() {
+      setState(() {});
+    });
+
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -80,45 +105,48 @@ class _PicScreenState extends State<PicScreen> {
                     const SizedBox(
                       height: 10,
                     ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        ...List.generate(
-                          context.watch<LetterCubit>().answer.length,
-                          (index) => GestureDetector(
-                            onTap: () {
-                              if(context.read<LetterCubit>().state[context.read<LetterCubit>().index[index]].visible){
-                                visible = false;
-                              }else{
-                                visible = true;
-                              }
-                              context.read<LetterCubit>().oldVisible(visible,context.read<LetterCubit>().index[index]);
-                              context.read<LetterCubit>().removeAnswer( context.read<LetterCubit>().answer[index]);
-                              setState(() {});
-                            },
-                            child: Container(
-                              margin: const EdgeInsets.only(right: 5),
-                              width: 50,
-                              height: 50,
-                              decoration: BoxDecoration(
-                                color: Colors.amber,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  context.watch<LetterCubit>().answer[index],
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w900,
+                    Align(
+                      alignment: animationAlign.value,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ...List.generate(
+                            context.watch<LetterCubit>().answer.length,
+                            (index) => GestureDetector(
+                              onTap: () {
+                                if(context.read<LetterCubit>().state[context.read<LetterCubit>().index[index]].visible){
+                                  visible = false;
+                                }else{
+                                  visible = true;
+                                }
+                                context.read<LetterCubit>().oldVisible(visible,context.read<LetterCubit>().index[index]);
+                                context.read<LetterCubit>().removeAnswer( context.read<LetterCubit>().answer[index]);
+                                setState(() {});
+                              },
+                              child: Container(
+                                margin: const EdgeInsets.only(right: 5),
+                                width: 50,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                  color: Colors.amber,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    context.watch<LetterCubit>().answer[index],
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w900,
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
+                            )
                           )
-                        )
-                      ],
+                        ],
+                      ),
                     ),
                     const SizedBox(
                       height: 50,
@@ -136,7 +164,11 @@ class _PicScreenState extends State<PicScreen> {
                                 duration: const Duration(milliseconds: 700),
                                 opacity: state[index].visible ? 0.0 : 1.0,
                                 child: GestureDetector(
-                                  onTap: context.watch<LetterCubit>().isFinished?(){}:() {
+                                  onTap: context.watch<LetterCubit>().isFinished?(){
+                                    if(context.read<LetterCubit>().isError == false) {
+                                      globalAnimationController.reverse();
+                                    }
+                                  }:() {
                                     if(state[index].visible){
                                       visible = false;
                                     }else{
