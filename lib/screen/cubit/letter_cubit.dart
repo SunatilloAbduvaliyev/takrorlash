@@ -29,16 +29,16 @@ class LetterCubit extends Cubit<List<LettersModel>> {
 
   void addAnswer(String answer, String trueAnswer){
     if(this.answer.length < trueAnswer.length){
-      print("Ifga kirdi");
+      debugPrint("Ifga kirdi");
       if(this.answer.length == trueAnswer.length-1){
         isFinished = true;
       }
     this.answer.add(answer);
     }else{
       String newAnswer = '';
-      this.answer.map((e)=>newAnswer+=e);
-      debugPrint('_______________________----check answer ${this.answer.length}');
-      if(newAnswer == trueAnswer){
+      this.answer.forEach((e) => newAnswer += e);
+      debugPrint('_______________________----check answer $newAnswer');
+      if(newAnswer == trueAnswer.toUpperCase()){
         debugPrint('_______________________----if isError $isError');
         isError = true;
       }else{
