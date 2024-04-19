@@ -18,6 +18,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint('--------------------build run');
     return Scaffold(
       body: Stack(
         children: [
@@ -40,10 +41,13 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Obx(
-                      () => Text(
+                      () {
+                        debugPrint('--------------------obx text run');
+
+                        return Text(
                         controller.question.value,
                         style: AppTextStyle.medium.copyWith(fontSize: 24),
-                      ),
+                      );},
                     ),
                     const SizedBox(
                       height: 20,
