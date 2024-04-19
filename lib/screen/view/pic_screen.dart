@@ -12,11 +12,13 @@ class PicScreen extends StatefulWidget {
   State<PicScreen> createState() => _PicScreenState();
 }
 
-class _PicScreenState extends State<PicScreen>  with SingleTickerProviderStateMixin {
+class _PicScreenState extends State<PicScreen>
+    with SingleTickerProviderStateMixin {
   bool visible = false;
 
   late AnimationController globalAnimationController;
   late Animation<Alignment> animationAlign;
+
   @override
   void initState() {
     globalAnimationController = AnimationController(
@@ -41,6 +43,7 @@ class _PicScreenState extends State<PicScreen>  with SingleTickerProviderStateMi
 
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -112,39 +115,52 @@ class _PicScreenState extends State<PicScreen>  with SingleTickerProviderStateMi
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           ...List.generate(
-                            context.watch<LetterCubit>().answer.length,
-                            (index) => GestureDetector(
-                              onTap: () {
-                                if(context.read<LetterCubit>().state[context.read<LetterCubit>().index[index]].visible){
-                                  visible = false;
-                                }else{
-                                  visible = true;
-                                }
-                                context.read<LetterCubit>().oldVisible(visible,context.read<LetterCubit>().index[index]);
-                                context.read<LetterCubit>().removeAnswer( context.read<LetterCubit>().answer[index]);
-                                setState(() {});
-                              },
-                              child: Container(
-                                margin: const EdgeInsets.only(right: 5),
-                                width: 50,
-                                height: 50,
-                                decoration: BoxDecoration(
-                                  color: Colors.amber,
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    context.watch<LetterCubit>().answer[index],
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w900,
+                              context.watch<LetterCubit>().answer.length,
+                              (index) => GestureDetector(
+                                    onTap: () {
+                                      if (context
+                                          .read<LetterCubit>()
+                                          .state[context
+                                              .read<LetterCubit>()
+                                              .index[index]]
+                                          .visible) {
+                                        visible = false;
+                                      } else {
+                                        visible = true;
+                                      }
+                                      context.read<LetterCubit>().oldVisible(
+                                          visible,
+                                          context
+                                              .read<LetterCubit>()
+                                              .index[index]);
+                                      context.read<LetterCubit>().removeAnswer(
+                                          context
+                                              .read<LetterCubit>()
+                                              .answer[index]);
+                                      setState(() {});
+                                    },
+                                    child: Container(
+                                      margin: const EdgeInsets.only(right: 5),
+                                      width: 50,
+                                      height: 50,
+                                      decoration: BoxDecoration(
+                                        color: Colors.amber,
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          context
+                                              .watch<LetterCubit>()
+                                              .answer[index],
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w900,
+                                          ),
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                ),
-                              ),
-                            )
-                          )
+                                  ))
                         ],
                       ),
                     ),
@@ -164,23 +180,55 @@ class _PicScreenState extends State<PicScreen>  with SingleTickerProviderStateMi
                                 duration: const Duration(milliseconds: 700),
                                 opacity: state[index].visible ? 0.0 : 1.0,
                                 child: GestureDetector(
-                                  onTap: context.watch<LetterCubit>().isFinished?(){
-                                    if(context.read<LetterCubit>().isError == false) {
-                                      globalAnimationController.reverse();
-                                    }
-                                  }:() {
-                                    if(state[index].visible){
-                                      visible = false;
-                                    }else{
-                                      visible = true;
-                                    }
-                                    context
-                                        .read<LetterCubit>()
-                                        .changeVisible(visible, index);
-                                    context
-                                        .read<LetterCubit>()
-                                        .addAnswer(state[index].letter, context.read<PicCubit>().state[context.read<PicCubit>().index].answer);
-                                  },
+                                  onTap: context.watch<LetterCubit>().isFinished
+                                      ? () {
+                                          // bool isError =  false;
+                                          // if(isError == false) {
+                                          //   globalAnimationController.reverse();
+                                          // }
+                                          bool? isError = context
+                                              .read<LetterCubit>()
+                                              .isError;
+                                          if (isError != null &&
+                                              isError == false) {
+                                            globalAnimationController.reverse();
+                                          }
+                                          context.read<LetterCubit>().addAnswer(
+                                            state[index].letter,
+                                            context
+                                                .read<PicCubit>()
+                                                .state[context
+                                                .read<PicCubit>()
+                                                .index]
+                                                .answer,
+                                          );
+                                        }
+                                      : () {
+                                          bool? isError = context
+                                              .read<LetterCubit>()
+                                              .isError;
+                                          if (isError != null &&
+                                              isError == false) {
+                                            globalAnimationController.reverse();
+                                          }
+                                          if (state[index].visible) {
+                                            visible = false;
+                                          } else {
+                                            visible = true;
+                                          }
+                                          context
+                                              .read<LetterCubit>()
+                                              .changeVisible(visible, index);
+                                          context.read<LetterCubit>().addAnswer(
+                                                state[index].letter,
+                                                context
+                                                    .read<PicCubit>()
+                                                    .state[context
+                                                        .read<PicCubit>()
+                                                        .index]
+                                                    .answer,
+                                              );
+                                        },
                                   child: Container(
                                     width: 50,
                                     height: 50,

@@ -7,7 +7,7 @@ class LetterCubit extends Cubit<List<LettersModel>> {
   LetterCubit():super(letters);
   List<String> answer = [];
   List<int> index = [];
-  bool isError = false;
+  bool? isError;
   bool isFinished = false;
 
   void changeVisible(bool visible, int index) {
@@ -28,7 +28,8 @@ class LetterCubit extends Cubit<List<LettersModel>> {
   }
 
   void addAnswer(String answer, String trueAnswer){
-    if(this.answer.length<trueAnswer.length){
+    if(this.answer.length < trueAnswer.length){
+      print("Ifga kirdi");
       if(this.answer.length == trueAnswer.length-1){
         isFinished = true;
       }
@@ -36,8 +37,13 @@ class LetterCubit extends Cubit<List<LettersModel>> {
     }else{
       String newAnswer = '';
       this.answer.map((e)=>newAnswer+=e);
+      debugPrint('_______________________----check answer ${this.answer.length}');
       if(newAnswer == trueAnswer){
+        debugPrint('_______________________----if isError $isError');
         isError = true;
+      }else{
+        debugPrint('_______________________----else isError $isError');
+        isError = false;
       }
     }
     debugPrint('________________-add answer $answer');
