@@ -1,0 +1,59 @@
+import 'dart:isolate';
+
+import 'package:dio/dio.dart';
+import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:open_filex/open_filex.dart';
+
+import '../data/model/file_model/file_model.dart';
+import '../data/model/file_model/file_status_model.dart';
+import '../screen/services/file_managet_services.dart';
+
+part 'file_manager_event.dart';
+
+part 'file_manager_state.dart';
+
+class FileManagerBloc extends Bloc<FileManagerEvent, FileManagerState> {
+  FileManagerBloc()
+      : super(
+    const FileManagerState(
+      progress: 0.0,
+      newFileLocation: "",
+    ),
+  ) {
+    on<DownloadFileEvent>(_downloadFile);
+  }
+
+  Future<void> _downloadFile(DownloadFileEvent event, emit) async {
+    Dio dio = Dio();
+
+    FileStatusModel fileStatusModel = await getStatus(event.fileDataModel);
+
+    if (fileStatusModel.isExist) {
+      OpenFilex.open(fileStatusModel.newFileLocation);
+    } else {
+      await dio.download(
+        event.fileDataModel.fileUrl,
+        fileStatusModel.newFileLocation,
+        onReceiveProgress: (count, total) async {
+          emit(state.copyWith(progress: count / total));
+        },
+      );
+      await FileManagerService.init();
+      emit(
+        state.copyWith(
+          progress: 1,
+          newFileLocation: fileStatusModel.newFileLocation,
+        ),
+      );
+    }
+  }
+}
+
+Future<FileStatusModel> getStatus(FileDataModel fileDataModel) async {
+  final FileStatusModel fileStatusModel =
+  await Isolate.run<FileStatusModel>(() async {
+    return await FileManagerService.checkFile(fileDataModel);
+  });
+  return fileStatusModel;
+}
