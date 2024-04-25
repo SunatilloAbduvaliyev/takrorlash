@@ -1,58 +1,58 @@
 package com.example.takrorlash
 
-
-import android.content.Context
-import android.content.ContextWrapper
-import android.content.Intent
-import android.content.IntentFilter
 import android.os.BatteryManager
-import android.os.Build.VERSION
-import android.os.Build.VERSION_CODES
+import android.os.Build
+import android.telephony.TelephonyManager
 import androidx.annotation.NonNull
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
+import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 
+class MainActivity: FlutterActivity() {
 
-class MainActivity : FlutterActivity() {
-    private val CHANNEL = "samples.flutter.dev/battery"
+    private val DEVICE_INFO_CHANNEL = "com.example.device_info_channel"
+
     override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
-        MethodChannel(
-            flutterEngine.dartExecutor.binaryMessenger,
-            CHANNEL
-        ).setMethodCallHandler { call, result ->
-            if (call.method == "getBatteryLevel") {
-                val batteryLevel = getBatteryLevel()
 
-                if (batteryLevel != -1) {
-                    result.success(batteryLevel)
-                } else {
-                    result.error("UNAVAILABLE", "Battery level not available.", null)
-                }
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, DEVICE_INFO_CHANNEL).setMethodCallHandler { call, result ->
+            if (call.method == "getDeviceInfo") {
+                val deviceInfo = getDeviceInfo()
+                result.success(deviceInfo)
             } else {
                 result.notImplemented()
             }
         }
     }
 
-    private fun getBatteryLevel(): Int {
-        val batteryLevel: Int
-        if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-            val batteryManager = getSystemService(Context.BATTERY_SERVICE) as BatteryManager
-            batteryLevel = batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY)
-        } else {
-            val intent = ContextWrapper(applicationContext).registerReceiver(
-                null,
-                IntentFilter(Intent.ACTION_BATTERY_CHANGED)
-            )
-            batteryLevel =
-                intent!!.getIntExtra(BatteryManager.EXTRA_LEVEL, -1) * 100 / intent.getIntExtra(
-                    BatteryManager.EXTRA_SCALE,
-                    -1
-                )
-        }
+    private fun getDeviceInfo(): Map<String, Any?> {
+        val deviceType = getDeviceType()
+        val deviceModel = Build.MODEL
+        val deviceBrand = Build.BRAND
+        val osVersion = Build.VERSION.RELEASE
+        val batteryLevel = getBatteryLevel()
 
-        return batteryLevel
+        return mapOf(
+            "deviceType" to deviceType,
+            "deviceModel" to deviceModel,
+            "deviceBrand" to deviceBrand,
+            "osVersion" to osVersion,
+            "batteryLevel" to batteryLevel
+        )
+    }
+
+    private fun getDeviceType(): String {
+        val telephonyManager = getSystemService(TELEPHONY_SERVICE) as TelephonyManager
+        return if (telephonyManager.phoneType != TelephonyManager.PHONE_TYPE_NONE) {
+            "Phone"
+        } else {
+            "Tablet"
+        }
+    }
+
+    private fun getBatteryLevel(): Int {
+        val batteryManager = getSystemService(BATTERY_SERVICE) as BatteryManager
+        return batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY)
     }
 }

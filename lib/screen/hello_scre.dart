@@ -1,98 +1,111 @@
-import 'dart:async';
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
-import '../utils/style/app_text_style.dart';
+import 'package:takrorlash/utils/style/app_text_style.dart';
 
 class HelloScreen extends StatefulWidget {
   const HelloScreen({super.key});
 
   @override
-  State<HelloScreen> createState() => _HelloScreenState();
+  _HelloScreenState createState() => _HelloScreenState();
 }
 
 class _HelloScreenState extends State<HelloScreen> {
-  static const platform = MethodChannel('samples.flutter.dev/battery');
-  String _batteryLevel = 'Unknown battery level.';
+  static const platform = MethodChannel('com.example.device_info_channel');
 
-  String deviceInfo = "Device Info:";
+  String deviceType = 'Unknown';
+  String deviceModel = 'Unknown';
+  String deviceBrand = 'Unknown';
+  String osVersion = 'Unknown';
+  String batteryLevel = 'Unknown';
 
-  Future<void> _getBatteryLevel() async {
-    String batteryLevel;
+  @override
+  void initState() {
+    super.initState();
+    _getDeviceInfo();
+  }
+
+  Future<void> _getDeviceInfo() async {
     try {
-      final result = await platform.invokeMethod<int>('getBatteryLevel');
-      batteryLevel = 'Battery level at $result % .';
+      final dynamic result = await platform.invokeMethod('getDeviceInfo');
+      final Map<String, dynamic> deviceInfo = Map<String, dynamic>.from(result);
+      setState(() {
+        deviceType = deviceInfo['deviceType'] ?? 'Unknown';
+        deviceModel = deviceInfo['deviceModel'] ?? 'Unknown';
+        deviceBrand = deviceInfo['deviceBrand'] ?? 'Unknown';
+        osVersion = deviceInfo['osVersion'] ?? 'Unknown';
+        batteryLevel = deviceInfo['batteryLevel']?.toString() ?? 'Unknown';
+      });
     } on PlatformException catch (e) {
-      batteryLevel = "Failed to get battery level: '${e.message}'.";
+      debugPrint("Failed to get device info: '${e.message}'.");
     }
-
-    setState(() {
-      _batteryLevel = batteryLevel;
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          title: const Text("Platform Specific"),
-        ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(_batteryLevel),
-              Text(
-                deviceInfo,
-                style: AppTextStyle.bold.copyWith(fontSize: 18),
-              )
-            ],
-          ),
-        ),
-        floatingActionButton: SizedBox(
-          width: 120,
-          child: Row(
-            children: [
-              FloatingActionButton(
-                onPressed: () async {
-                  DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
-
-                  AndroidDeviceInfo androidDeviceInfo =
-                  await deviceInfoPlugin.androidInfo;
-
-                  setState(() {
-                    deviceInfo += "ID: ${androidDeviceInfo.id}\n";
-                    deviceInfo += "VERSION: ${androidDeviceInfo.version.sdkInt}\n";
-                    deviceInfo += "TYPE: ${androidDeviceInfo.type}\n";
-                    deviceInfo += "MODEL: ${androidDeviceInfo.model}\n";
-                    deviceInfo +=
-                    "MANUFACTURER: ${androidDeviceInfo.manufacturer}\n";
-                    deviceInfo +=
-                    "SERIAL NUMBER: ${androidDeviceInfo.serialNumber}\n";
-                    deviceInfo += "DEVICE: ${androidDeviceInfo.device}\n";
-                  });
-                  // showDialog(context: context, builder: (context)=>const AboutDialog(
-                  //   applicationIcon: FlutterLogo(),
-                  //   applicationLegalese: 'Legalese',
-                  //   applicationName: 'Service App',
-                  //   applicationVersion: '1.0.0',
-                  //   children: [
-                  //     Text('Service file download app project')
-                  //   ],
-                  // ));
-                },
-                child: const Icon(Icons.mobile_friendly),
+      appBar: AppBar(
+        title:  Text('Device Info',style: AppTextStyle.regular.copyWith(color: Colors.white,),),
+        backgroundColor: Colors.blue,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: ListView(
+          children: <Widget>[
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: const [
+                  BoxShadow(
+                    color: Colors.black12,
+                    blurRadius: 8,
+                    spreadRadius: 4,
+                  ),
+                ],
               ),
-              FloatingActionButton(
-                onPressed: () {
-                  _getBatteryLevel();
-                },
-                child: const Icon(Icons.battery_0_bar),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                     Text(
+                      'Device Info',
+                      style: AppTextStyle.bold.copyWith(fontSize: 28,),
+                    ),
+                    const SizedBox(height: 16),
+                    _buildDeviceInfoRow('Device Type:', deviceType),
+                    _buildDeviceInfoRow('Device Model:', deviceModel),
+                    _buildDeviceInfoRow('Device Brand:', deviceBrand),
+                    _buildDeviceInfoRow('OS Version:', osVersion),
+                    _buildDeviceInfoRow('Battery Level:', batteryLevel),
+                  ],
+                ),
               ),
-            ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDeviceInfoRow(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Row(
+        children: [
+          Text(
+            label,
+            style: AppTextStyle.regular,
           ),
-        ));
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              value,
+              style: AppTextStyle.regular,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
