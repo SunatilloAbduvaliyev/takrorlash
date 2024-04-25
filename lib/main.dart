@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:takrorlash/cubit/navigation_button_cubit.dart';
+import 'package:takrorlash/screen/hello_scre.dart';
 import 'package:takrorlash/screen/home/home_screen.dart';
 
 import 'data/repository/file_repository.dart';
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: HomeScreen(),
+      home: HelloScreen(),
     );
   }
 }
