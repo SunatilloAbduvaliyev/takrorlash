@@ -14,6 +14,7 @@ class CurrencyController {
   }
 
   Future<List<CurrencyModel>> getAllCurrency() async {
+    _currencyData =  await Hive.openBox<CurrencyModel>('currency');
     return _currencyData.values.toList();
   }
 
@@ -21,8 +22,7 @@ class CurrencyController {
     await _currencyData.put(currencyModel.code, currencyModel);
   }
 
-  void deleteCurrency(int id)  {
+  void deleteCurrency(int id)async {
     _currencyData.delete(id);
   }
-
 }

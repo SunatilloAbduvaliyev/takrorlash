@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:takrorlash/data/local/local_storage.dart';
 import 'package:takrorlash/data/model/currency_model/currency_model.dart';
 import 'package:takrorlash/screen/bloc/currency_bloc.dart';
 import 'package:takrorlash/screen/bloc/currency_event.dart';
@@ -16,7 +17,7 @@ Future<void> main() async {
     MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (_) => CurrencyBloc()
+          create: (_) => CurrencyBloc(getIt<CurrencyController>())
             ..add(
               GetNetworkCurrencyEvent(),
             ),

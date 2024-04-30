@@ -24,7 +24,7 @@ class ApiProvider {
     } catch (e) {
       return NetworkResponse(
         errorText: "SERVERGA MUROJAT QILISHDA XATOLIK YUZ BERDI: ${e.toString()}",
-        statusCode: -1,
+        statusCode: 404,
       );
     }
   }

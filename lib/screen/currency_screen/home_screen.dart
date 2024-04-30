@@ -13,28 +13,46 @@ class CurrencyScreen extends StatelessWidget {
     return Scaffold(
       body: BlocConsumer<CurrencyBloc, CurrencyState>(
         builder: (BuildContext context, CurrencyState state) {
-          if(state is CurrencyInitialState){
+          if (state is CurrencyInitialState) {
             return const Center(
               child: SizedBox(),
             );
           }
-          if(state is CurrencySuccessState){
+          if (state is CurrencySuccessState) {
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: ListView.builder(
                 itemCount: state.data.length,
-                itemBuilder: (context, index){
+                itemBuilder: (context, index) {
                   return ListTile(
-                    title: Text(state.data[index].title,style: const TextStyle(color: Colors.black),),
+                    title: Text(
+                      state.data[index].title,
+                      style: const TextStyle(color: Colors.black),
+                    ),
+                    subtitle: Row(
+                      children: [
+                        Text(
+                          state.data[index].code,
+                          style: const TextStyle(color: Colors.black),
+                        ),
+                        const SizedBox(
+                          width: 100,
+                        ),
+                        Text(
+                          state.data[index].cbPrice,
+                          style: const TextStyle(color: Colors.black),
+                        ),
+                      ],
+                    ),
                   );
                 },
               ),
             );
           }
-          if(state is CurrencyNetworkState){
+          if (state is CurrencyNetworkState) {
             return Center(
               child: ElevatedButton(
-                onPressed: (){
+                onPressed: () {
                   context.read<CurrencyBloc>().add(GetNetworkCurrencyEvent());
                 },
                 child: const Text('Refresh'),
@@ -47,22 +65,23 @@ class CurrencyScreen extends StatelessWidget {
         },
         listener: (BuildContext context, CurrencyState state) {
           debugPrint("___________________________state $state");
-          if(state is CurrencyNetworkState){
-            if(state.isLocal){
-              showDialog(context: context, builder:(context){
-                return AlertDialog(
-                  title: const Text('Error'),
-                  content: const Text('No internet connection'),
-                  actions: <Widget>[
-                    TextButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      child: const Text('Ok'),
-                    ),
-                  ],
-                );
-              });
-            }
-            else{
+          if (state is CurrencyNetworkState) {
+            if (state.isLocal) {
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: const Text('Error'),
+                      content: const Text('No internet connection'),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () => Navigator.of(context).pop(),
+                          child: const Text('Ok'),
+                        ),
+                      ],
+                    );
+                  });
+            } else {
               context.read<CurrencyBloc>().add(GetLocalCurrencyEvent());
             }
           }
