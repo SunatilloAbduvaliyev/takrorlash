@@ -20,6 +20,8 @@ class _AnimatedBuilderWidgetState extends State<AnimatedBuilderWidget> with Tick
     animationController.dispose();
     super.dispose();
   }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
