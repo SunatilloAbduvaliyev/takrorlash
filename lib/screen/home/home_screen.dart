@@ -11,11 +11,12 @@ import 'package:takrorlash/screen/clip_widges/clip_oval_widget.dart';
 import 'package:takrorlash/screen/clip_widges/clip_path_widget.dart';
 import 'package:takrorlash/screen/clip_widges/clip_rect_widget.dart';
 import 'package:takrorlash/screen/dialog/about_dialog_widget.dart';
-import 'package:takrorlash/screen/drag_target_widget.dart';
+import 'package:takrorlash/screen/drag_target_widgets/drag_target_widget.dart';
 
 import '../animated_widgets/animated_builder.dart';
 import '../box_decorated_transform.dart';
 import '../date_table_widget.dart';
+import '../drag_target_widgets/list_drag_target_widget.dart';
 import '../search/autocomplete_widget.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -53,6 +54,7 @@ class _HomeScreenState extends State<HomeScreen>   {
     const BoxDecoratedTransform(),
     //Drag widget
     const DragTargetWidget(),
+    const ListDragTargetWidget(),
   ];
   final List<String> screenNames = [
     'AnimatedAlignWidget',
@@ -72,6 +74,7 @@ class _HomeScreenState extends State<HomeScreen>   {
     "DataTableDemo",
     "BoxDecoratedTransform",
     "DragTargetWidget",
+    "ListDragTargetWidget",
   ];
 
   @override
