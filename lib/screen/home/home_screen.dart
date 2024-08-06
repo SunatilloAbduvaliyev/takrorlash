@@ -12,6 +12,7 @@ import 'package:takrorlash/screen/clip_widges/clip_path_widget.dart';
 import 'package:takrorlash/screen/clip_widges/clip_rect_widget.dart';
 import 'package:takrorlash/screen/dialog/about_dialog_widget.dart';
 import 'package:takrorlash/screen/drag_target_widgets/drag_target_widget.dart';
+import 'package:takrorlash/screen/stepper_widget.dart';
 
 import '../animated_widgets/animated_builder.dart';
 import '../box_decorated_transform.dart';
@@ -55,6 +56,8 @@ class _HomeScreenState extends State<HomeScreen>   {
     //Drag widget
     const DragTargetWidget(),
     const ListDragTargetWidget(),
+    //stepper widget
+    const StepperWidget(),
   ];
   final List<String> screenNames = [
     'AnimatedAlignWidget',
@@ -75,6 +78,7 @@ class _HomeScreenState extends State<HomeScreen>   {
     "BoxDecoratedTransform",
     "DragTargetWidget",
     "ListDragTargetWidget",
+    "StepperWidget",
   ];
 
   @override
