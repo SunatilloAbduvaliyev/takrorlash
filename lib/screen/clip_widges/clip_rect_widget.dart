@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:takrorlash/screen/clip_widges/clip_path_widget.dart';
 
 class ClipRectWidget extends StatefulWidget {
   const ClipRectWidget({super.key});

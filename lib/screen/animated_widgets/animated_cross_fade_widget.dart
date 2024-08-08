@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:takrorlash/screen/global_appbar.dart';
 
 class AnimatedCrossFadeWidget extends StatefulWidget {
   const AnimatedCrossFadeWidget({super.key});
@@ -13,6 +14,7 @@ class _AnimatedCrossFadeWidgetState extends State<AnimatedCrossFadeWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: const GlobalAppbar(title: "AnimatedCrossFade",),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -23,7 +25,14 @@ class _AnimatedCrossFadeWidgetState extends State<AnimatedCrossFadeWidget> {
                 isAnimated = !isAnimated;
               });
             },
-            child: const Text("Almashtirish"),
+            child: const Text(
+              "Almashtirish",
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w600,
+                fontSize: 20,
+              ),
+            ),
           ),
           const SizedBox(
             height: 100,

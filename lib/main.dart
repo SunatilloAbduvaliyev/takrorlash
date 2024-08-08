@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:takrorlash/screen/home/home_screen.dart';
+import 'package:flutter/services.dart';
+import 'package:takrorlash/screen/animation/animated_screen.dart';
 
 void main(){
   runApp(const MyApp());
@@ -15,8 +16,16 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.blueAccent,
         primarySwatch: Colors.blue,
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.blueAccent,
+          systemOverlayStyle: SystemUiOverlayStyle(
+            statusBarColor: Colors.transparent,
+            statusBarIconBrightness: Brightness.light,
+            statusBarBrightness: Brightness.light
+          )
+        )
       ),
-      home: const HomeScreen(),
+      home: const AnimationScreen(),
     );
   }
 

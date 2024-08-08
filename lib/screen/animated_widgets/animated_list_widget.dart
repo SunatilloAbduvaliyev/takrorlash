@@ -6,12 +6,11 @@ class AnimatedListWidget extends StatefulWidget {
   State<AnimatedListWidget> createState() => _AnimatedListWidgetState();
 }
 class _AnimatedListWidgetState extends State<AnimatedListWidget> {
-  final List<String> _items = []; // Ro'yxat elementlarini saqlovchi o'zgaruvchi
-  final GlobalKey<AnimatedListState> _key = GlobalKey<AnimatedListState>(); // AnimatedList holatini boshqaruvchi kalit
+  final List<String> _items = [];
+  final GlobalKey<AnimatedListState> _key = GlobalKey<AnimatedListState>();
 
   void _addItem() {
-    // Element qo'shish funksiyasi
-    _items.insert(0, "items ${_items.length + 1}"); // Yangi element ro'yxat boshiga qo'shiladi
+    _items.insert(0, "items ${_items.length + 1}");
     _key.currentState!.insertItem(
       0, // Element ro'yxatning 0-indeksiga qo'shiladi
       duration: const Duration(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:takrorlash/screen/global_appbar.dart';
 
 class AnimatedModalBarrierWidget extends StatefulWidget {
   const AnimatedModalBarrierWidget({super.key});
@@ -40,6 +41,7 @@ class _AnimatedModalBarrierWidgetState extends State<AnimatedModalBarrierWidget>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: const GlobalAppbar(title: "AnimateModalBarier",),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(15),
