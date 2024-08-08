@@ -13,6 +13,9 @@ import 'package:takrorlash/screen/animation/internal_animation/animated_pysical_
 import 'package:takrorlash/screen/animation/internal_animation/animated_rotation_widget.dart';
 import 'package:takrorlash/screen/animation/internal_animation/animated_size_widget.dart';
 import 'package:takrorlash/screen/animation/internal_animation/animated_theme_widget.dart';
+import 'package:takrorlash/screen/animation/internal_animation/single_ticker.dart';
+import 'package:takrorlash/screen/animation/internal_animation/ticker.dart';
+import 'package:takrorlash/screen/animation/internal_animation/tween_animation_builder_widget.dart';
 
 
 class AnimationScreen extends StatefulWidget {
