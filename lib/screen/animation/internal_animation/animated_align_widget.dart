@@ -19,12 +19,12 @@ class _AnimatedAlignTwoWidgetState extends State<AnimatedAlignTwoWidget> {
         child: GestureDetector(
           onTap: () {
             setState(() {
-              isAnimated = !isAnimated; // Toggle the state between true and false
+              isAnimated = !isAnimated;
             });
           },
           child: AnimatedAlign(
             duration: const Duration(seconds: 1),
-            curve: Curves.bounceInOut,
+            curve: Curves.easeInOutBack,
             alignment: isAnimated ? Alignment.center : Alignment.topCenter,
             child: const FlutterLogo(size: 100,),
           ),

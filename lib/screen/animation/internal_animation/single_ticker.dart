@@ -20,7 +20,7 @@ class _SingleTickerExampleState extends State<SingleTickerExample>
     _animationController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 2),
-    );
+    )..repeat(reverse: true);
     _alignmentTransition = Tween<AlignmentGeometry>(
       begin: Alignment.topLeft,
       end: Alignment.bottomRight,
@@ -39,7 +39,6 @@ class _SingleTickerExampleState extends State<SingleTickerExample>
         curve: Curves.linearToEaseOut,
       ),
     );
-    _animationController.forward();
   }
 
   @override

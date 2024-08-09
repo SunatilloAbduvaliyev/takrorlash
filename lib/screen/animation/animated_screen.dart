@@ -16,6 +16,7 @@ import 'package:takrorlash/screen/animation/internal_animation/animated_theme_wi
 import 'package:takrorlash/screen/animation/internal_animation/single_ticker.dart';
 import 'package:takrorlash/screen/animation/internal_animation/ticker.dart';
 import 'package:takrorlash/screen/animation/internal_animation/tween_animation_builder_widget.dart';
+import 'package:takrorlash/screen/animation/single_ticker_animatio_widget.dart';
 
 
 class AnimationScreen extends StatefulWidget {
@@ -41,6 +42,8 @@ class _AnimationScreenState extends State<AnimationScreen>   {
     const AnimatedListWidget(),
     const AnimatedModalBarrierWidget(),
     const AnimatedRotationExample(),
+    const SingleTickerAnimationWidget(),
+    const SingleTickerExample(),
   ];
   final List<String> screenNames = [
     "AnimatedAlign",
@@ -57,6 +60,8 @@ class _AnimationScreenState extends State<AnimationScreen>   {
     "AnimatedList",
     "AnimatedModalBarrierWidget",
     "AnimatedRotationWidget",
+    "SingleTickerProvider",
+    "SingleTickerTwo"
   ];
 
   @override
