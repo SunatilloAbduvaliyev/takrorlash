@@ -1,22 +1,22 @@
-import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:takrorlash/cubit/user_state.dart';
 import 'package:takrorlash/data/forms_status.dart';
+import 'package:takrorlash/data/network/dio_client.dart';
 import '../data/user_model.dart';
 
 class UserCubit extends Cubit<UserState> {
   UserCubit() : super(UserState.initialValue());
-
+  final dio = DioClient();
   // Yangi foydalanuvchi qo'shish
   Future<void> insertUser({required UserModel userModel}) async {
     emit(state.copyWith(status: FormsStatus.loading));
     try {
       // Firebase RealTime Database ga yangi foydalanuvchi qo'shish
-      Response response = await Dio().post(
-        "https://chat-app-71981-default-rtdb.firebaseio.com/users.json",
-        data: jsonEncode(userModel.toJson()), // Ma'lumotni JSON formatida yuboring
+      Response response = await dio.post(
+        path: 'users.json',
+        data: userModel.toJson(), // Ma'lumotni JSON formatida yuboring
       );
 
       if (response.statusCode == 200) {
@@ -38,9 +38,9 @@ class UserCubit extends Cubit<UserState> {
   Future<void> updateUser({required UserModel userModel}) async {
     emit(state.copyWith(status: FormsStatus.loading));
     try {
-      Response response = await Dio().put(
-        "https://chat-app-71981-default-rtdb.firebaseio.com/users/${userModel.uid}.json",
-        data: jsonEncode(userModel.toJson()), // Ma'lumotni JSON formatida yuboring
+      Response response = await dio.put(
+        path: "users/${userModel.uid}.json",
+        data: userModel.toJson(), // Ma'lumotni JSON formatida yuboring
       );
 
       if (response.statusCode == 200) {
@@ -57,8 +57,8 @@ class UserCubit extends Cubit<UserState> {
   Future<void> deleteUser({required String uid}) async {
     emit(state.copyWith(status: FormsStatus.loading));
     try {
-      Response response = await Dio().delete(
-        "https://chat-app-71981-default-rtdb.firebaseio.com/users/$uid.json",
+      Response response = await dio.delete(
+        path: "users/$uid.json"
       );
 
       if (response.statusCode == 200) {
@@ -75,8 +75,8 @@ class UserCubit extends Cubit<UserState> {
   Future<void> getUser({required String uid}) async {
     emit(state.copyWith(status: FormsStatus.loading));
     try {
-      Response response = await Dio().get(
-        "https://chat-app-71981-default-rtdb.firebaseio.com/users/$uid.json",
+      Response response = await dio.get(
+        path: "users/$uid.json"
       );
 
       if (response.statusCode == 200) {
@@ -96,8 +96,8 @@ class UserCubit extends Cubit<UserState> {
   Future<void> getAllUsers() async {
     emit(state.copyWith(status: FormsStatus.loading));
     try {
-      Response response = await Dio().get(
-        "https://chat-app-71981-default-rtdb.firebaseio.com/users.json",
+      Response response = await dio.get(
+        path: "users.json",
       );
 
       if (response.statusCode == 200) {
